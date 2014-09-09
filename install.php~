@@ -1,0 +1,51 @@
+<?php
+$user=$_GET['username'];
+$password=$_GET['password'];
+$database=$_GET['database'];
+$table_prefix = "timetablegen_";
+
+$conn = mysql_connect("localhost",$user,$password) or die("check connection");
+mysql_select_db($database);
+
+mysql_query("CREATE TABLE ".$table_prefix."user(uid int(10),user_name varchar(30),password varchar(30));")
+or
+die(mysql_error());
+
+mysql_query("CREATE TABLE ".$table_prefix."course(course_id int(10),course_name varchar(30));")
+or
+die(mysql_error());
+
+mysql_query("CREATE TABLE ".$table_prefix."subject(subject_id int(10),subject_name varchar(30),course_id int(10) references course(course_id));")
+or
+die(mysql_error());
+
+mysql_query("CREATE TABLE ".$table_prefix."faculty(faculty_id int(10),faculty_name varchar(30));")
+or
+die(mysql_error());
+
+mysql_query("CREATE TABLE ".$table_prefix."subject_faculty(faculty_id int(10),subject_id int(10));")
+or
+die(mysql_error());
+
+mysql_query("CREATE TABLE ".$table_prefix."classroom(classroom_id int(10),classroom_no int(10));")
+or
+die(mysql_error());
+
+mysql_query("CREATE TABLE ".$table_prefix."subject_classroom(classroom_id int(10),subject_id int(10),day_start date,break_time date,lecture_time date,lunch_time date);")
+or
+die(mysql_error());
+
+
+$fp = fopen('config.inc.php', 'w');
+fwrite($fp,'
+<?php
+$my_user =  '.'"'.$user.'" ;
+$my_password = '.'"'.$password.'" ;
+$my_database = '.'"'.$database.'" ;
+$my_table_prefix = '.'"'.$table_prefix.'";
+?>'
+);
+fclose($fp);
+
+
+?>

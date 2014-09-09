@@ -1,0 +1,3 @@
+have a flag in user table, so that when anyone wants to register as user, the flag has to be set by admin.
+Only then, the person can have a username and password stored in user table.
+
